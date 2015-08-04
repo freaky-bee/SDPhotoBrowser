@@ -57,19 +57,19 @@
 - (void)setupToolbars
 {
     // 1. 序标
-    UILabel *indexLabel = [[UILabel alloc] init];
-    indexLabel.bounds = CGRectMake(0, 0, 80, 30);
-    indexLabel.textAlignment = NSTextAlignmentCenter;
-    indexLabel.textColor = [UIColor whiteColor];
-    indexLabel.font = [UIFont boldSystemFontOfSize:20];
-    indexLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    indexLabel.layer.cornerRadius = indexLabel.bounds.size.height * 0.5;
-    indexLabel.clipsToBounds = YES;
     if (self.imageCount > 1) {
+        UILabel *indexLabel = [[UILabel alloc] init];
+        indexLabel.bounds = CGRectMake(0, 0, 80, 30);
+        indexLabel.textAlignment = NSTextAlignmentCenter;
+        indexLabel.textColor = [UIColor whiteColor];
+        indexLabel.font = [UIFont boldSystemFontOfSize:20];
+        indexLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+        indexLabel.layer.cornerRadius = indexLabel.bounds.size.height * 0.5;
+        indexLabel.clipsToBounds = YES;
         indexLabel.text = [NSString stringWithFormat:@"1/%ld", (long)self.imageCount];
+        _indexLabel = indexLabel;
+        [self addSubview:indexLabel];
     }
-    _indexLabel = indexLabel;
-    [self addSubview:indexLabel];
     
     // 2.保存按钮
     UIButton *saveButton = [[UIButton alloc] init];
@@ -190,7 +190,8 @@
     [self addSubview:tempView];
 
     _saveButton.hidden = YES;
-    
+    [_indexLabel removeFromSuperview];
+        
     [UIView animateWithDuration:SDPhotoBrowserHideImageAnimationDuration animations:^{
         tempView.frame = targetTemp;
         self.backgroundColor = [UIColor clearColor];
@@ -247,7 +248,9 @@
         [self showFirstImage];
     }
     
-    _indexLabel.center = CGPointMake(self.bounds.size.width * 0.5, 35);
+    if (_indexLabel) {
+        _indexLabel.center = CGPointMake(self.bounds.size.width * 0.5, 35);
+    }
     _saveButton.frame = CGRectMake(30, self.bounds.size.height - 70, 50, 25);
 }
 
